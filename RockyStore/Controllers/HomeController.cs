@@ -26,7 +26,7 @@ namespace RockyStore.Controllers
         {
             HomeVM homeVM = new HomeVM()
             {
-                Products = _db.Product.Include(u => u.Category).Include(u => u.ApplicationType),
+                Products = _db.Product.Include(u => u.Category),
                 Categories = _db.Category
             };
             return View(homeVM);
@@ -43,7 +43,7 @@ namespace RockyStore.Controllers
 
             DetailsVM DetailsVM = new DetailsVM()
             {
-                Product = _db.Product.Include(u => u.Category).Include(u => u.ApplicationType).Where(u => u.Id == id).FirstOrDefault(),
+                Product = _db.Product.Include(u => u.Category).Where(u => u.Id == id).FirstOrDefault(),
                 ExistsInCart = false
             };
 
