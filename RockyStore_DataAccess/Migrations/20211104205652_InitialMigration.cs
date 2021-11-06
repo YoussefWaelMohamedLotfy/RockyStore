@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace RockyStore.Migrations
+namespace RockyStore_DataAccess.Migrations
 {
     public partial class InitialMigration : Migration
     {

@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using RockyStore.Data;
+using RockyStore_DataAccess.Data;
 using System;
 
 namespace RockyStore

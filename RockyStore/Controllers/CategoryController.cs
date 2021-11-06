@@ -1,7 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using RockyStore.Data;
-using RockyStore.Models;
+using RockyStore_DataAccess.Data;
+using RockyStore_Models;
+using RockyStore_Utility;
 using System.Collections.Generic;
 
 namespace RockyStore.Controllers

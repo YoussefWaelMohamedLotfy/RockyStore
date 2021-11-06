@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Collections.Generic;
 
-namespace RockyStore.Models.ViewModels
+namespace RockyStore_Models.ViewModels
 {
     public class ProductVM
     {

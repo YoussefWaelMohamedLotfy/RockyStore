@@ -4,7 +4,7 @@
     ViewData["Title"] = "Register";
 }
 
-@if (User.IsInRole(RockyStore.Constants.AdminRole))
+@if (User.IsInRole(RockyStore_Utility.Constants.AdminRole))
 {
     <h1>Register an Admin Account</h1>
 }
@@ -44,7 +44,7 @@ else
                 <input asp-for="Input.ConfirmPassword" class="form-control" />
                 <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
             </div>
-            @if (User.IsInRole(RockyStore.Constants.AdminRole))
+            @if (User.IsInRole(RockyStore_Utility.Constants.AdminRole))
             {
                 <button type = "submit" class="btn btn-warning">Register Admin User</button>
             }

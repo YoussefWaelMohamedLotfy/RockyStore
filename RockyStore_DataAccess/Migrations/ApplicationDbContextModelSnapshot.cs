@@ -3,17 +3,15 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using RockyStore.Data;
+using RockyStore_DataAccess.Data;
 
-namespace RockyStore.Migrations
+namespace RockyStore_DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20211104205652_InitialMigration")]
-    partial class InitialMigration
+    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -223,23 +221,7 @@ namespace RockyStore.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("RockyStore.Models.ApplicationType", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("ApplicationType");
-                });
-
-            modelBuilder.Entity("RockyStore.Models.Category", b =>
+            modelBuilder.Entity("RockyStore_Models.Category", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -258,15 +240,12 @@ namespace RockyStore.Migrations
                     b.ToTable("Category");
                 });
 
-            modelBuilder.Entity("RockyStore.Models.Product", b =>
+            modelBuilder.Entity("RockyStore_Models.Product", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("ApplicationTypeId")
-                        .HasColumnType("int");
 
                     b.Property<int>("CategoryId")
                         .HasColumnType("int");
@@ -289,14 +268,12 @@ namespace RockyStore.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ApplicationTypeId");
-
                     b.HasIndex("CategoryId");
 
                     b.ToTable("Product");
                 });
 
-            modelBuilder.Entity("RockyStore.Models.ApplicationUser", b =>
+            modelBuilder.Entity("RockyStore_Models.ApplicationUser", b =>
                 {
                     b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
 
@@ -357,21 +334,13 @@ namespace RockyStore.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("RockyStore.Models.Product", b =>
+            modelBuilder.Entity("RockyStore_Models.Product", b =>
                 {
-                    b.HasOne("RockyStore.Models.ApplicationType", "ApplicationType")
-                        .WithMany()
-                        .HasForeignKey("ApplicationTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("RockyStore.Models.Category", "Category")
+                    b.HasOne("RockyStore_Models.Category", "Category")
                         .WithMany()
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("ApplicationType");
 
                     b.Navigation("Category");
                 });

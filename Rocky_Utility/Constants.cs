@@ -1,4 +1,4 @@
-﻿namespace RockyStore
+﻿namespace RockyStore_Utility
 {
     public static class Constants
     {

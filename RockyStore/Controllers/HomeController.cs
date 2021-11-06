@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using RockyStore.Data;
-using RockyStore.Models;
-using RockyStore.Models.ViewModels;
-using RockyStore.Utility;
+using RockyStore_DataAccess.Data;
+using RockyStore_Models;
+using RockyStore_Models.ViewModels;
+using RockyStore_Utility;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;

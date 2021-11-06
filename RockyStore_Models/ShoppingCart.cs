@@ -1,4 +1,4 @@
-﻿namespace RockyStore.Models
+﻿namespace RockyStore_Models
 {
     public class ShoppingCart
     {

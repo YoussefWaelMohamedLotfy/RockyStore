@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace RockyStore.Models
+namespace RockyStore_Models
 {
     public class Product
     {

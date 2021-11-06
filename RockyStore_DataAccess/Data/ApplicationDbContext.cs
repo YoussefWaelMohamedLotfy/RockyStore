@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using RockyStore.Models;
+using RockyStore_Models;
 
-namespace RockyStore.Data
+namespace RockyStore_DataAccess.Data
 {
     public class ApplicationDbContext : IdentityDbContext
     {

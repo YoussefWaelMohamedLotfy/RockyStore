@@ -2,10 +2,10 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using RockyStore.Data;
-using RockyStore.Models;
-using RockyStore.Models.ViewModels;
-using RockyStore.Utility;
+using RockyStore_DataAccess.Data;
+using RockyStore_Models;
+using RockyStore_Models.ViewModels;
+using RockyStore_Utility;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;

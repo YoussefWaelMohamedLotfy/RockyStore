@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using RockyStore.Data;
+using RockyStore_DataAccess.Data;
 
-namespace RockyStore.Migrations
+namespace RockyStore_DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211105194801_RemoveApplicationTypeFromDb")]
+    partial class RemoveApplicationTypeFromDb
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -221,7 +223,7 @@ namespace RockyStore.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("RockyStore.Models.Category", b =>
+            modelBuilder.Entity("RockyStore_Models.Category", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -240,7 +242,7 @@ namespace RockyStore.Migrations
                     b.ToTable("Category");
                 });
 
-            modelBuilder.Entity("RockyStore.Models.Product", b =>
+            modelBuilder.Entity("RockyStore_Models.Product", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -273,7 +275,7 @@ namespace RockyStore.Migrations
                     b.ToTable("Product");
                 });
 
-            modelBuilder.Entity("RockyStore.Models.ApplicationUser", b =>
+            modelBuilder.Entity("RockyStore_Models.ApplicationUser", b =>
                 {
                     b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
 
@@ -334,9 +336,9 @@ namespace RockyStore.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("RockyStore.Models.Product", b =>
+            modelBuilder.Entity("RockyStore_Models.Product", b =>
                 {
-                    b.HasOne("RockyStore.Models.Category", "Category")
+                    b.HasOne("RockyStore_Models.Category", "Category")
                         .WithMany()
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)

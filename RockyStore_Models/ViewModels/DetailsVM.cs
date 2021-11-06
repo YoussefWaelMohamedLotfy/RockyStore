@@ -1,4 +1,4 @@
-﻿namespace RockyStore.Models.ViewModels
+﻿namespace RockyStore_Models.ViewModels
 {
     public class DetailsVM
     {
