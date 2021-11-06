@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using RockyStore_DataAccess.Data;
+using RockyStore_DataAccess.Repository.IRepository;
 using RockyStore_Models;
 using RockyStore_Models.ViewModels;
 using RockyStore_Utility;
@@ -18,18 +19,18 @@ namespace RockyStore.Controllers
     [Authorize(Roles = Constants.AdminRole)]
     public class ProductController : Controller
     {
-        private readonly ApplicationDbContext _db;
+        private readonly IProductRepository _prodRepo;
         private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public ProductController(ApplicationDbContext db, IWebHostEnvironment webHostEnvironment)
+        public ProductController(IWebHostEnvironment webHostEnvironment, IProductRepository prodRepo)
         {
-            _db = db;
             _webHostEnvironment = webHostEnvironment;
+            _prodRepo = prodRepo;
         }
 
         public IActionResult Index()
         {
-            IEnumerable<Product> objList = _db.Product.Include(u => u.Category);
+            IEnumerable<Product> objList = _prodRepo.GetAll(includeProperties: "Category");
             return View(objList);
         }
 
@@ -39,11 +40,7 @@ namespace RockyStore.Controllers
             ProductVM productVM = new()
             {
                 Product = new Product(),
-                CategorySelectList = _db.Category.Select(i => new SelectListItem
-                {
-                    Text = i.Name,
-                    Value = i.Id.ToString()
-                })
+                CategorySelectList = _prodRepo.GetAllDropdownList(Constants.CategoryName),
             };
 
             if (id == null)
@@ -53,7 +50,7 @@ namespace RockyStore.Controllers
             }
             else
             {
-                productVM.Product = _db.Product.Find(id);
+                productVM.Product = _prodRepo.Find(id.GetValueOrDefault());
 
                 if (productVM.Product == null)
                     return NotFound();
@@ -86,12 +83,12 @@ namespace RockyStore.Controllers
                     }
 
                     productVM.Product.Image = fileName + extension;
-                    _db.Product.Add(productVM.Product);
+                    _prodRepo.Add(productVM.Product);
                 }
                 else
                 {
                     // updating
-                    var objFromDb = _db.Product.AsNoTracking().FirstOrDefault(u => u.Id == productVM.Product.Id);
+                    var objFromDb = _prodRepo.FirstOrDefault(u => u.Id == productVM.Product.Id, isTracking: false);
 
                     if (files.Count > 0)
                     {
@@ -118,18 +115,14 @@ namespace RockyStore.Controllers
                         productVM.Product.Image = objFromDb.Image;
                     }
 
-                    _db.Product.Update(productVM.Product);
+                    _prodRepo.Update(productVM.Product);
                 }
 
-                _db.SaveChanges();
+                _prodRepo.Save();
                 return RedirectToAction(nameof(Index));
             }
 
-            productVM.CategorySelectList = _db.Category.Select(i => new SelectListItem
-            {
-                Text = i.Name,
-                Value = i.Id.ToString()
-            });
+            productVM.CategorySelectList = _prodRepo.GetAllDropdownList(Constants.CategoryName);
             return View(productVM);
         }
 
@@ -140,8 +133,8 @@ namespace RockyStore.Controllers
             if (id == null || id == 0)
                 return NotFound();
             
-            Product product = _db.Product.Include(u => u.Category).FirstOrDefault(u => u.Id == id);
-            
+            Product product = _prodRepo.FirstOrDefault(u => u.Id == id, includeProperties: "Category");
+
             if (product == null)
                 return NotFound();
 
@@ -153,7 +146,7 @@ namespace RockyStore.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult DeletePost(int? id)
         {
-            var obj = _db.Product.Find(id);
+            var obj = _prodRepo.Find(id.GetValueOrDefault());
 
             if (obj == null)
                 return NotFound();
@@ -164,8 +157,8 @@ namespace RockyStore.Controllers
             if (System.IO.File.Exists(oldFile))
                 System.IO.File.Delete(oldFile);
 
-            _db.Product.Remove(obj);
-            _db.SaveChanges();
+            _prodRepo.Remove(obj);
+            _prodRepo.Save();
             return RedirectToAction(nameof(Index));
         }
     }

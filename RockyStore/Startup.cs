@@ -6,6 +6,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using RockyStore_DataAccess.Data;
+using RockyStore_DataAccess.Repository.IRepository;
+using RockyStore_DataAccess.Repository;
 using System;
 
 namespace RockyStore
@@ -37,6 +39,9 @@ namespace RockyStore
                 Options.Cookie.HttpOnly = true;
                 Options.Cookie.IsEssential = true;
             });
+
+            services.AddScoped<ICategoryRepository, CategoryRepository>();
+            services.AddScoped<IProductRepository, ProductRepository>();
 
             services.AddRazorPages();
             services.AddControllersWithViews();
