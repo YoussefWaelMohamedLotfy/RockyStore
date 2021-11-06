@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -7,11 +8,13 @@ using RockyStore.Models;
 using RockyStore.Models.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.IO;
 using System.Linq;
 
 namespace RockyStore.Controllers
 {
+    [Authorize(Roles = Constants.AdminRole)]
     public class ProductController : Controller
     {
         private readonly ApplicationDbContext _db;
