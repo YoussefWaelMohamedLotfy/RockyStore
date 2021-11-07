@@ -46,7 +46,6 @@ namespace RockyStore
             services.AddScoped<IInquiryDetailRepository, InquiryDetailRepository>();
             services.AddScoped<IApplicationUserRepository, ApplicationUserRepository>();
 
-            services.AddRazorPages();
             services.AddControllersWithViews();
         }
 

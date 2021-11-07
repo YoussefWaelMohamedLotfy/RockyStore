@@ -1,18 +1,13 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using RockyStore_DataAccess.Data;
 using RockyStore_DataAccess.Repository.IRepository;
 using RockyStore_Models;
 using RockyStore_Models.ViewModels;
 using RockyStore_Utility;
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.IO;
-using System.Linq;
 
 namespace RockyStore.Controllers
 {
@@ -117,7 +112,7 @@ namespace RockyStore.Controllers
 
                     _prodRepo.Update(productVM.Product);
                 }
-
+                TempData[Constants.Success] = "Action completed successfully";
                 _prodRepo.Save();
                 return RedirectToAction(nameof(Index));
             }
@@ -132,7 +127,7 @@ namespace RockyStore.Controllers
         {
             if (id == null || id == 0)
                 return NotFound();
-            
+
             Product product = _prodRepo.FirstOrDefault(u => u.Id == id, includeProperties: "Category");
 
             if (product == null)
@@ -159,6 +154,7 @@ namespace RockyStore.Controllers
 
             _prodRepo.Remove(obj);
             _prodRepo.Save();
+            TempData[Constants.Success] = "Action completed successfully";
             return RedirectToAction(nameof(Index));
         }
     }

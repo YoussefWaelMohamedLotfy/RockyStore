@@ -5,7 +5,6 @@ using RockyStore_Models;
 using RockyStore_Utility;
 using System.Collections.Generic;
 
-
 namespace RockyStore.Controllers
 {
     [Authorize(Roles = Constants.AdminRole)]
@@ -39,9 +38,11 @@ namespace RockyStore.Controllers
             {
                 _catRepo.Add(obj);
                 _catRepo.Save();
+                TempData[Constants.Success] = "Category created successfully";
                 return RedirectToAction(nameof(Index));
             }
-            
+
+            TempData[Constants.Error] = "Error while creating category";
             return View(obj);
         }
 
@@ -68,6 +69,7 @@ namespace RockyStore.Controllers
             {
                 _catRepo.Update(obj);
                 _catRepo.Save();
+                TempData[Constants.Success] = "Action completed successfully";
                 return RedirectToAction(nameof(Index));
             }
 
@@ -97,7 +99,8 @@ namespace RockyStore.Controllers
 
             if (obj == null)
                 return NotFound();
-            
+
+            TempData[Constants.Success] = "Action completed successfully";
             _catRepo.Remove(obj);
             _catRepo.Save();
             return RedirectToAction(nameof(Index));

@@ -102,8 +102,7 @@ namespace RockyStore.Controllers
                + "templates" + Path.DirectorySeparatorChar.ToString() +
                "Inquiry.html";
 
-            var subject = "New Inquiry";
-            string HtmlBody = "";
+            string HtmlBody = string.Empty;
             using (StreamReader sr = System.IO.File.OpenText(PathToTemplate))
             {
                 HtmlBody = sr.ReadToEnd();
@@ -112,7 +111,7 @@ namespace RockyStore.Controllers
             StringBuilder productListSB = new StringBuilder();
             foreach (var prod in ProductUserVM.ProductList)
             {
-                productListSB.Append($" - Name: { prod.Name} <span style='font-size:14px;'> (ID: {prod.Id})</span><br />");
+                productListSB.Append($" - Name: {prod.Name} <span style='font-size:14px;'> (ID: {prod.Id})</span><br />");
             }
 
             string messageBody = string.Format(HtmlBody,
@@ -143,7 +142,7 @@ namespace RockyStore.Controllers
             }
 
             _inqDRepo.Save();
-
+            TempData[Constants.Success] = "Inquiry submitted successfully";
             return RedirectToAction(nameof(InquiryConfirmation));
         }
 
