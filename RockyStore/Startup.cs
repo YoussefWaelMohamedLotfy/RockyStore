@@ -9,6 +9,7 @@ using RockyStore_DataAccess.Data;
 using RockyStore_DataAccess.Repository.IRepository;
 using RockyStore_DataAccess.Repository;
 using System;
+using RockyStore_Utility.BrainTree;
 
 namespace RockyStore
 {
@@ -40,11 +41,16 @@ namespace RockyStore
                 Options.Cookie.IsEssential = true;
             });
 
+            services.Configure<BrainTreeSettings>(Configuration.GetSection("BrainTree"));
+            services.AddSingleton<IBrainTreeGate, BrainTreeGate>();
+
             services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<IInquiryHeaderRepository, InquiryHeaderRepository>();
             services.AddScoped<IInquiryDetailRepository, InquiryDetailRepository>();
             services.AddScoped<IApplicationUserRepository, ApplicationUserRepository>();
+            services.AddScoped<IOrderHeaderRepository, OrderHeaderRepository>();
+            services.AddScoped<IOrderDetailRepository, OrderDetailRepository>();
 
             services.AddControllersWithViews();
         }

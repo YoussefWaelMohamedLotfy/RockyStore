@@ -10,19 +10,20 @@
         <br />
         <div class="backgroundWhiteBorder">
             <div class="container row">
-                <div class="col -8">
+                <div class="col">
                     <div class="card mt-4">
-                        <div class="card-header bg-dark text-light ml-0 row container">
+                        <div class="card-header bg-dark text-light row container">
                             <div class="col-6">
                                 <i class="fa fa-shopping-cart"></i> &nbsp;
                                 Shopping Cart
                             </div>
                             <div class="col-6 text-right">
+                                <a asp-action="Clear" class="btn btn-outline-warning btn-sm">Clear Cart</a>
                                 <a asp-action="Index" asp-controller="Home" class="btn btn-outline-info btn-sm">Continue Shopping</a>
                             </div>
                         </div>
                         <div class="card-body">
-                            <div class=" d-none d-lg-block">
+                            <div class="d-none d-lg-block">
                                 <div class="row" style="color:#821f3d">
                                     <div class="col-lg-2">
                                     </div>
@@ -100,6 +101,14 @@
                                 </div>
                                 orderTotal += Model[i].Price * Model[i].TempSqFt;
                                 <hr />
+                            }
+                            @if (User.IsInRole(Constants.AdminRole))
+                            {
+                                <div class="row">
+                                    <div class="col-12 text-right pr-4" style="color:#821f3d">
+                                        Order Total : @string.Format("{0:c}", orderTotal)
+                                    </div>
+                                </div>
                             }
                         </div>
                         <div class="card-footer">
