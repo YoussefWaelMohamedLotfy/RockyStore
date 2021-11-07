@@ -49,7 +49,15 @@ namespace RockyStore.Controllers
             }
 
             List<int> prodInCart = shoppingCartList.Select(i => i.ProductId).ToList();
-            IEnumerable<Product> prodList = _prodRepo.GetAll(u => prodInCart.Contains(u.Id));
+            IEnumerable<Product> prodListTemp = _prodRepo.GetAll(u => prodInCart.Contains(u.Id));
+            IList<Product> prodList = new List<Product>();
+
+            foreach (var cartObj in shoppingCartList)
+            {
+                Product prodTemp = prodListTemp.FirstOrDefault(u => u.Id == cartObj.ProductId);
+                prodTemp.TempSqFt = cartObj.SqFt;
+                prodList.Add(prodTemp);
+            }
 
             return View(prodList);
         }
@@ -57,18 +65,48 @@ namespace RockyStore.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [ActionName("Index")]
-        public IActionResult IndexPost()
+        public IActionResult IndexPost(IEnumerable<Product> ProdList)
         {
+            List<ShoppingCart> shoppingCartList = new List<ShoppingCart>();
 
+            foreach (Product prod in ProdList)
+            {
+                shoppingCartList.Add(new ShoppingCart { ProductId = prod.Id, SqFt = prod.TempSqFt });
+            }
+
+            HttpContext.Session.Set(Constants.SessionCart, shoppingCartList);
             return RedirectToAction(nameof(Summary));
         }
 
 
         public IActionResult Summary()
         {
-            var claimsIdentity = (ClaimsIdentity)User.Identity;
-            var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
-            //var userId = User.FindFirstValue(ClaimTypes.Name);
+            ApplicationUser applicationUser;
+
+            if (User.IsInRole(Constants.AdminRole))
+            {
+                if (HttpContext.Session.Get<int>(Constants.SessionInquiryId) != 0)
+                {
+                    // Cart has been loaded using an inquiry
+                    InquiryHeader inquiryHeader = _inqHRepo.FirstOrDefault(u => u.Id == HttpContext.Session.Get<int>(Constants.SessionInquiryId));
+                    applicationUser = new ApplicationUser()
+                    {
+                        Email = inquiryHeader.Email,
+                        FullName = inquiryHeader.FullName,
+                        PhoneNumber = inquiryHeader.PhoneNumber
+                    };
+                }
+                else
+                    applicationUser = new ApplicationUser();
+            }
+            else
+            {
+                var claimsIdentity = (ClaimsIdentity)User.Identity;
+                var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+                //var userId = User.FindFirstValue(ClaimTypes.Name);
+
+                applicationUser = _userRepo.FirstOrDefault(u => u.Id == claim.Value);
+            }
 
             List<ShoppingCart> shoppingCartList = new List<ShoppingCart>();
             if (HttpContext.Session.Get<IEnumerable<ShoppingCart>>(Constants.SessionCart) != null
@@ -83,9 +121,15 @@ namespace RockyStore.Controllers
 
             ProductUserVM = new ProductUserVM()
             {
-                ApplicationUser = _userRepo.FirstOrDefault(u => u.Id == claim.Value),
-                ProductList = prodList.ToList()
+                ApplicationUser = applicationUser,
             };
+
+            foreach (var cartObj in shoppingCartList)
+            {
+                Product prodTemp = _prodRepo.FirstOrDefault(u => u.Id == cartObj.ProductId);
+                prodTemp.TempSqFt = cartObj.SqFt;
+                ProductUserVM.ProductList.Add(prodTemp);
+            }
 
             return View(ProductUserVM);
         }
@@ -164,6 +208,21 @@ namespace RockyStore.Controllers
             }
 
             shoppingCartList.Remove(shoppingCartList.FirstOrDefault(u => u.ProductId == id));
+            HttpContext.Session.Set(Constants.SessionCart, shoppingCartList);
+            return RedirectToAction(nameof(Index));
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult UpdateCart(IEnumerable<Product> ProdList)
+        {
+            List<ShoppingCart> shoppingCartList = new List<ShoppingCart>();
+            
+            foreach (Product prod in ProdList)
+            {
+                shoppingCartList.Add(new ShoppingCart { ProductId = prod.Id, SqFt = prod.TempSqFt });
+            }
+
             HttpContext.Session.Set(Constants.SessionCart, shoppingCartList);
             return RedirectToAction(nameof(Index));
         }
