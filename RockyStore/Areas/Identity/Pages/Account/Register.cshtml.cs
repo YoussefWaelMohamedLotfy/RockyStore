@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Text.Encodings.Web;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authentication;
+﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
@@ -15,6 +8,12 @@ using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using RockyStore_Models;
 using RockyStore_Utility;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Text;
+using System.Text.Encodings.Web;
+using System.Threading.Tasks;
 
 namespace RockyStore.Areas.Identity.Pages.Account
 {
@@ -31,7 +30,7 @@ namespace RockyStore.Areas.Identity.Pages.Account
             UserManager<IdentityUser> userManager,
             SignInManager<IdentityUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender, 
+            IEmailSender emailSender,
             RoleManager<IdentityRole> roleManager)
         {
             _userManager = userManager;
@@ -68,19 +67,13 @@ namespace RockyStore.Areas.Identity.Pages.Account
 
             [Required]
             public string FullName { get; set; }
-            
+
             [Required]
             public string PhoneNumber { get; set; }
         }
 
         public async Task OnGetAsync(string returnUrl = null)
         {
-            if (!await _roleManager.RoleExistsAsync(Constants.AdminRole))
-            {
-                await _roleManager.CreateAsync(new IdentityRole(Constants.AdminRole));
-                await _roleManager.CreateAsync(new IdentityRole(Constants.CustomerRole));
-            }
-
             ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
         }
