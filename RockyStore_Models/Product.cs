@@ -33,7 +33,7 @@ namespace RockyStore_Models
         public virtual Category Category { get; set; }
 
         [NotMapped]
-        [Range(1, 10000)]
+        [Range(1, 10000, ErrorMessage = "Sqft must be greater than 0.")]
         public int TempSqFt { get; set; }
     }
 }
