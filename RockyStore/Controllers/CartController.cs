@@ -227,7 +227,6 @@ namespace RockyStore.Controllers
                + "templates" + Path.DirectorySeparatorChar.ToString() +
                "Inquiry.html";
 
-                var subject = "New Inquiry";
                 string HtmlBody = "";
                 using (StreamReader sr = System.IO.File.OpenText(PathToTemplate))
                 {
